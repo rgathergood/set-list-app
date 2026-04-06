@@ -72,7 +72,12 @@ export function SongItem({ song, onDelete, onOpenNotes, isOwner }: SongItemProps
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate font-medium">{song.title}</p>
+        <div className="flex items-center gap-1.5">
+          <p className="truncate font-medium">{song.title}</p>
+          {song.shared_notes && (
+            <StickyNote className="h-3.5 w-3.5 shrink-0 text-primary" />
+          )}
+        </div>
         <p className="truncate text-sm text-muted-foreground">
           {song.artist || 'Unknown Artist'}
         </p>
