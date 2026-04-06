@@ -60,25 +60,22 @@ export async function GET(request: NextRequest) {
       }
     )
 
+    // Handle 403 - Spotify restricted Audio Features API for most apps (as of late 2024)
     // Handle 404 - track might not have audio features available
-    if (response.status === 404) {
-      console.log('[v0] No audio features available for track:', trackId)
+    // Both cases are expected and should not be treated as errors
+    if (response.status === 403 || response.status === 404) {
       return NextResponse.json({ 
         bpm: null, 
         key: null,
-        message: 'Audio features not available for this track' 
       })
     }
 
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error('[v0] Spotify audio features error:', response.status, errorText)
       // Return empty data instead of error to not break the UI
       return NextResponse.json({ bpm: null, key: null })
     }
 
     const data = await response.json()
-    console.log('[v0] Audio features fetched successfully for track:', trackId)
     return NextResponse.json(data)
   } catch (err) {
     console.error('[v0] Audio features error:', err)
