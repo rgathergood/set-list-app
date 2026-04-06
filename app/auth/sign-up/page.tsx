@@ -76,9 +76,9 @@ export default function Page() {
               <CardDescription>Get started with SetList Builder</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSignUp}>
-                <div className="flex flex-col gap-6">
-                  <div className="grid gap-2">
+              <form onSubmit={handleSignUp} suppressHydrationWarning>
+                <div className="flex flex-col gap-6" suppressHydrationWarning>
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <Label htmlFor="displayName">Display Name</Label>
                     <Input
                       id="displayName"
@@ -88,7 +88,7 @@ export default function Page() {
                       onChange={(e) => setDisplayName(e.target.value)}
                     />
                   </div>
-                  <div className="grid gap-2">
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
@@ -99,7 +99,7 @@ export default function Page() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="grid gap-2">
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <div className="flex items-center">
                       <Label htmlFor="password">Password</Label>
                     </div>
@@ -111,7 +111,7 @@ export default function Page() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
-                  <div className="grid gap-2">
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <div className="flex items-center">
                       <Label htmlFor="repeat-password">Repeat Password</Label>
                     </div>

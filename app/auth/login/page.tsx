@@ -63,9 +63,9 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleLogin}>
-                <div className="flex flex-col gap-6">
-                  <div className="grid gap-2">
+              <form onSubmit={handleLogin} suppressHydrationWarning>
+                <div className="flex flex-col gap-6" suppressHydrationWarning>
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
@@ -76,7 +76,7 @@ export default function Page() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="grid gap-2">
+                  <div className="grid gap-2" suppressHydrationWarning>
                     <Label htmlFor="password">Password</Label>
                     <Input
                       id="password"
