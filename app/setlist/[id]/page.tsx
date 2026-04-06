@@ -47,7 +47,7 @@ import { ArrowLeft, Calendar, Clock, MapPin, Music, Plus, Search, Settings } fro
 import Link from 'next/link'
 import useSWR from 'swr'
 import type { Group, Song, SetlistWithDetails } from '@/lib/types'
-import { formatDuration, calculateTotalDuration } from '@/lib/types'
+import { formatDurationLong, calculateTotalDuration } from '@/lib/types'
 import { format } from 'date-fns'
 
 interface PageProps {
@@ -460,7 +460,7 @@ export default function SetlistPage({ params }: PageProps) {
               </Badge>
               <Badge variant="outline" className="gap-1">
                 <Clock className="h-3 w-3" />
-                {formatDuration(totalDuration)}
+                {formatDurationLong(totalDuration)}
               </Badge>
             </div>
           </div>

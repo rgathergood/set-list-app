@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Group, Song, Setlist } from '@/lib/types'
-import { formatDuration, calculateTotalDuration } from '@/lib/types'
+import { formatDuration, formatDurationLong, calculateTotalDuration } from '@/lib/types'
 import { format } from 'date-fns'
 
 interface PageProps {
@@ -91,7 +91,7 @@ export default async function SharedSetlistPage({ params }: PageProps) {
             </Badge>
             <Badge variant="outline" className="gap-1">
               <Clock className="h-3 w-3" />
-              {formatDuration(totalDuration)}
+              {formatDurationLong(totalDuration)}
             </Badge>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default async function SharedSetlistPage({ params }: PageProps) {
                   <CardTitle className="text-lg">{group.name}</CardTitle>
                   <span className="text-sm text-muted-foreground">
                     {group.songs.length} song{group.songs.length !== 1 ? 's' : ''} ·{' '}
-                    {formatDuration(calculateTotalDuration(group.songs))}
+                    {formatDurationLong(calculateTotalDuration(group.songs))}
                   </span>
                 </div>
               </CardHeader>

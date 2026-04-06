@@ -22,7 +22,7 @@ import {
 import { ChevronDown, MoreVertical, Pencil, Trash2, Plus } from 'lucide-react'
 import { SongItem } from '@/components/song-item'
 import type { Group, Song } from '@/lib/types'
-import { formatDuration, calculateTotalDuration } from '@/lib/types'
+import { formatDurationLong, calculateTotalDuration } from '@/lib/types'
 
 interface SetlistGroupProps {
   group: Group & { songs: Song[] }
@@ -106,7 +106,7 @@ export function SetlistGroup({
           <div className="flex items-center gap-3">
             <span className="text-sm text-muted-foreground">
               {group.songs.length} song{group.songs.length !== 1 ? 's' : ''} ·{' '}
-              {formatDuration(totalDuration)}
+              {formatDurationLong(totalDuration)}
             </span>
             {isOwner && (
               <DropdownMenu>

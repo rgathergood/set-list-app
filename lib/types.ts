@@ -115,6 +115,19 @@ export const formatDuration = (ms: number | null): string => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
+// Format duration in ms to hours and minutes (e.g., "1h 23m" or "45m")
+export const formatDurationLong = (ms: number | null): string => {
+  if (!ms) return '0m'
+  const totalMinutes = Math.floor(ms / 60000)
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  
+  if (hours === 0) {
+    return `${minutes}m`
+  }
+  return `${hours}h ${minutes}m`
+}
+
 // Calculate total duration of songs
 export const calculateTotalDuration = (songs: Song[]): number => {
   return songs.reduce((acc, song) => acc + (song.duration_ms || 0), 0)
