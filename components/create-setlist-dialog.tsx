@@ -41,8 +41,6 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
       const supabase = createClient()
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
-      console.log('[v0] Auth check:', { user: user?.id, authError })
-      
       if (authError) {
         throw new Error(`Authentication error: ${authError.message}`)
       }
@@ -50,8 +48,6 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
       if (!user) {
         throw new Error('You must be logged in to create a setlist. Please sign in and try again.')
       }
-
-      console.log('[v0] Creating setlist with user_id:', user.id)
 
       const { data: setlist, error: createError } = await supabase
         .from('setlists')
@@ -65,10 +61,7 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
         .select()
         .single()
 
-      console.log('[v0] Create result:', { setlist, createError })
-
       if (createError) {
-        console.error('[v0] Supabase error details:', createError)
         // Provide user-friendly error messages
         if (createError.code === '42501') {
           throw new Error('Permission denied. Please ensure you are logged in with a verified email address.')
@@ -89,10 +82,7 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
           position: 0,
         })
 
-      if (groupError) {
-        console.error('[v0] Failed to create default group:', groupError)
-        // Don't throw here - setlist was created, we can still navigate
-      }
+      // Don't throw on group error - setlist was created, we can still navigate
 
       onOpenChange(false)
       resetForm()
