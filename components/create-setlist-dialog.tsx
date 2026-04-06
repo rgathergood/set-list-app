@@ -41,8 +41,6 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
       const supabase = createClient()
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
-      console.log('[v0] Auth check - user:', user?.id, 'authError:', authError)
-      
       if (authError) {
         throw new Error(`Authentication error: ${authError.message}`)
       }
@@ -51,8 +49,6 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
         throw new Error('You must be logged in to create a setlist. Please sign in and try again.')
       }
 
-      console.log('[v0] Attempting to create setlist with user_id:', user.id)
-      
       const { data: setlist, error: createError } = await supabase
         .from('setlists')
         .insert({
@@ -65,10 +61,7 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
         .select()
         .single()
 
-      console.log('[v0] Create setlist result - data:', setlist, 'error:', createError)
-
       if (createError) {
-        console.error('[v0] Supabase error code:', createError.code, 'message:', createError.message, 'details:', createError.details, 'hint:', createError.hint)
         // Provide user-friendly error messages
         if (createError.code === '42501') {
           throw new Error('Permission denied. Please ensure you are logged in with a verified email address.')
@@ -81,18 +74,13 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
       }
 
       // Create a default "Set 1" group for the new setlist
-      console.log('[v0] Creating default group for setlist:', setlist.id)
-      
-      const { error: groupError } = await supabase
+      await supabase
         .from('groups')
         .insert({
           setlist_id: setlist.id,
           name: 'Set 1',
           position: 0,
         })
-
-      console.log('[v0] Group create result - error:', groupError)
-      
       // Don't throw on group error - setlist was created, we can still navigate
 
       onOpenChange(false)
