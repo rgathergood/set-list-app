@@ -7,8 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'SetList Builder',
-  description: 'Collaborative set list management for bands',
+  title: 'SetList Builder - Organize Your Gigs',
+  description: 'Create, organize, and share setlists for your band. Drag-and-drop song ordering, Spotify integration, and real-time collaboration.',
   generator: 'v0.app',
   icons: {
     icon: [
