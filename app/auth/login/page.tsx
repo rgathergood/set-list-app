@@ -14,14 +14,19 @@ import { Label } from '@/components/ui/label'
 import { Music2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Page() {
+  const [mounted, setMounted] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,6 +49,45 @@ export default function Page() {
     }
   }
 
+  if (!mounted) {
+    return (
+      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
+                <Music2 className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <h1 className="text-2xl font-bold">SetList Builder</h1>
+              <p className="text-sm text-muted-foreground">Organize your gigs with ease</p>
+            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl">Welcome back</CardTitle>
+                <CardDescription>
+                  Sign in to your account to continue
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col gap-6">
+                  <div className="grid gap-2">
+                    <Label>Email</Label>
+                    <div className="h-10 rounded-md border bg-muted animate-pulse" />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Password</Label>
+                    <div className="h-10 rounded-md border bg-muted animate-pulse" />
+                  </div>
+                  <div className="h-10 rounded-md bg-primary animate-pulse" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
@@ -63,9 +107,9 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleLogin} suppressHydrationWarning>
-                <div className="flex flex-col gap-6" suppressHydrationWarning>
-                  <div className="grid gap-2" suppressHydrationWarning>
+              <form onSubmit={handleLogin}>
+                <div className="flex flex-col gap-6">
+                  <div className="grid gap-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
@@ -76,7 +120,7 @@ export default function Page() {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="grid gap-2" suppressHydrationWarning>
+                  <div className="grid gap-2">
                     <Label htmlFor="password">Password</Label>
                     <Input
                       id="password"
