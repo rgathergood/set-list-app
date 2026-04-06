@@ -3,7 +3,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -79,21 +78,9 @@ export function SongItem({ song, onDelete, onOpenNotes, isOwner }: SongItemProps
         </p>
       </div>
 
-      <div className="flex items-center gap-1.5 sm:gap-2">
-        {song.bpm && (
-          <Badge variant="secondary" className="font-mono text-xs px-1.5 sm:px-2">
-            {song.bpm}
-          </Badge>
-        )}
-        {song.song_key && (
-          <Badge variant="secondary" className="text-xs px-1.5 sm:px-2">
-            {song.song_key}
-          </Badge>
-        )}
-        <span className="hidden min-w-[48px] text-right font-mono text-sm text-muted-foreground sm:block">
-          {formatDuration(song.duration_ms)}
-        </span>
-      </div>
+      <span className="hidden min-w-[48px] text-right font-mono text-sm text-muted-foreground sm:block">
+        {formatDuration(song.duration_ms)}
+      </span>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

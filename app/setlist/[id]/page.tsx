@@ -42,7 +42,7 @@ import { SetlistGroup } from '@/components/setlist-group'
 import { SongItem } from '@/components/song-item'
 import { SpotifySearch } from '@/components/spotify-search'
 import type { SpotifyTrack } from '@/lib/types'
-import { keyNumberToString } from '@/lib/types'
+
 import { ArrowLeft, Calendar, Clock, MapPin, Music, Plus, Search, Settings } from 'lucide-react'
 import Link from 'next/link'
 import useSWR from 'swr'
@@ -363,10 +363,7 @@ export default function SetlistPage({ params }: PageProps) {
     mutate()
   }
 
-  const handleSpotifyAddSong = async (
-    track: SpotifyTrack,
-    audioFeatures?: { tempo: number; key: number; energy: number }
-  ) => {
+  const handleSpotifyAddSong = async (track: SpotifyTrack) => {
     if (!activeGroupId) return
     
     const supabase = createClient()
@@ -380,9 +377,6 @@ export default function SetlistPage({ params }: PageProps) {
       artist: track.artists.map((a) => a.name).join(', '),
       album: track.album.name,
       duration_ms: track.duration_ms,
-      bpm: audioFeatures?.tempo ? Math.round(audioFeatures.tempo) : null,
-      song_key: audioFeatures?.key !== undefined ? keyNumberToString(audioFeatures.key) : null,
-      energy: audioFeatures?.energy,
       spotify_id: track.id,
       spotify_uri: track.uri,
       album_art_url: track.album.images[0]?.url || null,

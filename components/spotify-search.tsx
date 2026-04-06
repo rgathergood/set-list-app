@@ -7,12 +7,12 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Search, Music, Loader2, Plus } from 'lucide-react'
 import Image from 'next/image'
 import type { SpotifyTrack } from '@/lib/types'
-import { formatDuration, keyNumberToString } from '@/lib/types'
+import { formatDuration } from '@/lib/types'
 import { useDebounce } from '@/hooks/use-debounce'
 import useSWR from 'swr'
 
 interface SpotifySearchProps {
-  onSelectTrack: (track: SpotifyTrack, audioFeatures?: { tempo: number; key: number; energy: number }) => void
+  onSelectTrack: (track: SpotifyTrack) => void
 }
 
 async function searchSpotify(query: string): Promise<{ items: SpotifyTrack[] }> {
@@ -20,12 +20,6 @@ async function searchSpotify(query: string): Promise<{ items: SpotifyTrack[] }> 
   
   const response = await fetch(`/api/spotify/search?q=${encodeURIComponent(query)}&limit=10`)
   if (!response.ok) throw new Error('Search failed')
-  return response.json()
-}
-
-async function getAudioFeatures(trackId: string) {
-  const response = await fetch(`/api/spotify/audio-features?trackId=${trackId}`)
-  if (!response.ok) return null
   return response.json()
 }
 
@@ -39,17 +33,10 @@ export function SpotifySearch({ onSelectTrack }: SpotifySearchProps) {
     () => searchSpotify(debouncedQuery)
   )
 
-  const handleSelectTrack = useCallback(async (track: SpotifyTrack) => {
+  const handleSelectTrack = useCallback((track: SpotifyTrack) => {
     setAddingTrackId(track.id)
-    try {
-      // Fetch audio features for BPM and key
-      const audioFeatures = await getAudioFeatures(track.id)
-      onSelectTrack(track, audioFeatures)
-    } catch {
-      onSelectTrack(track)
-    } finally {
-      setAddingTrackId(null)
-    }
+    onSelectTrack(track)
+    setAddingTrackId(null)
   }, [onSelectTrack])
 
   return (
