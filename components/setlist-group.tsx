@@ -161,9 +161,21 @@ export function SetlistGroup({
             ) : (
               <div className="flex h-20 items-center justify-center rounded-lg border-2 border-dashed text-muted-foreground">
                 <p className="text-sm">
-                  {isOwner ? 'Drag songs here or click Add Song' : 'No songs in this set'}
+                  {isOwner ? 'No songs yet - add your first song below' : 'No songs in this set'}
                 </p>
               </div>
+            )}
+            
+            {isOwner && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-3 w-full"
+                onClick={() => onAddSong(group.id)}
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Add Song
+              </Button>
             )}
           </div>
         </CollapsibleContent>

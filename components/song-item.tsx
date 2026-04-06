@@ -79,18 +79,18 @@ export function SongItem({ song, onDelete, onOpenNotes, isOwner }: SongItemProps
         </p>
       </div>
 
-      <div className="hidden items-center gap-2 sm:flex">
+      <div className="flex items-center gap-1.5 sm:gap-2">
         {song.bpm && (
-          <Badge variant="secondary" className="font-mono text-xs">
-            {song.bpm} BPM
+          <Badge variant="secondary" className="font-mono text-xs px-1.5 sm:px-2">
+            {song.bpm}
           </Badge>
         )}
         {song.song_key && (
-          <Badge variant="secondary" className="text-xs">
+          <Badge variant="secondary" className="text-xs px-1.5 sm:px-2">
             {song.song_key}
           </Badge>
         )}
-        <span className="min-w-[48px] text-right font-mono text-sm text-muted-foreground">
+        <span className="hidden min-w-[48px] text-right font-mono text-sm text-muted-foreground sm:block">
           {formatDuration(song.duration_ms)}
         </span>
       </div>
