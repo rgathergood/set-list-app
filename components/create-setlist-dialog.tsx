@@ -39,11 +39,19 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
 
     try {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      console.log('[v0] Auth check:', { user: user?.id, authError })
+      
+      if (authError) {
+        throw new Error(`Authentication error: ${authError.message}`)
+      }
       
       if (!user) {
-        throw new Error('Not authenticated')
+        throw new Error('You must be logged in to create a setlist. Please sign in and try again.')
       }
+
+      console.log('[v0] Creating setlist with user_id:', user.id)
 
       const { data: setlist, error: createError } = await supabase
         .from('setlists')
@@ -57,16 +65,34 @@ export function CreateSetlistDialog({ open, onOpenChange, onSuccess }: CreateSet
         .select()
         .single()
 
-      if (createError) throw createError
+      console.log('[v0] Create result:', { setlist, createError })
+
+      if (createError) {
+        console.error('[v0] Supabase error details:', createError)
+        // Provide user-friendly error messages
+        if (createError.code === '42501') {
+          throw new Error('Permission denied. Please ensure you are logged in with a verified email address.')
+        } else if (createError.code === '23505') {
+          throw new Error('A setlist with this title already exists.')
+        } else if (createError.message?.includes('row-level security')) {
+          throw new Error('Permission denied. Your account may not have the required permissions. Please try logging out and back in.')
+        }
+        throw new Error(createError.message || 'Failed to create setlist. Please try again.')
+      }
 
       // Create a default "Set 1" group for the new setlist
-      await supabase
+      const { error: groupError } = await supabase
         .from('groups')
         .insert({
           setlist_id: setlist.id,
           name: 'Set 1',
           position: 0,
         })
+
+      if (groupError) {
+        console.error('[v0] Failed to create default group:', groupError)
+        // Don't throw here - setlist was created, we can still navigate
+      }
 
       onOpenChange(false)
       resetForm()
