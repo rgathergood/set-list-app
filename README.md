@@ -1,35 +1,58 @@
-# v0-set-list-app
+# Set List App
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A web app for building and sharing gig set lists. Search for songs via Spotify, drag them into order, track total running time, and share a read-only link with the band.
 
-## Built with v0
+## Stack
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- [Next.js](https://nextjs.org) 16 (App Router) with React 19
+- [Supabase](https://supabase.com) for auth and data
+- Spotify Web API for song search
+- Tailwind CSS 4 and [shadcn/ui](https://ui.shadcn.com) components
+- [dnd-kit](https://dndkit.com) for drag-and-drop ordering
+- Hosted on [Vercel](https://vercel.com); every merge to `main` deploys automatically
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_f4EOx0CKkj4PxyRipplnOGMM8pPU)
+## Getting started
 
-## Getting Started
+1. Install dependencies:
 
-First, run the development server:
+   ```bash
+   npm install
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+2. Create `.env.local` in the project root:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SPOTIFY_CLIENT_ID=
+   SPOTIFY_CLIENT_SECRET=
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   # Optional
+   SPOTIFY_REDIRECT_URI=                     # defaults to $NEXT_PUBLIC_APP_URL/api/spotify/callback
+   NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL=    # sign-up email redirect when developing locally
+   ```
 
-## Learn More
+3. Set up the database by running `scripts/001_create_schema.sql` in the Supabase SQL editor.
 
-To learn more, take a look at the following resources:
+4. Start the dev server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+   ```bash
+   npm run dev
+   ```
 
-<a href="https://v0.app/chat/api/kiro/clone/rgathergood/v0-set-list-app" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+   Then open [http://localhost:3000](http://localhost:3000).
+
+## Project structure
+
+| Path | Purpose |
+| --- | --- |
+| `app/dashboard` | List of the user's set lists |
+| `app/setlist/[id]` | Set list editor and settings |
+| `app/share/[shareId]` | Public read-only view of a shared set list |
+| `app/auth` | Login, sign-up and auth callback |
+| `app/api/spotify` | Spotify auth and search routes |
+| `components` | App components (`components/ui` holds the shadcn primitives) |
+| `lib/supabase` | Supabase clients for browser, server and the request proxy |
+| `proxy.ts` | Session refresh and route protection on every request |
+| `scripts` | Database schema |
